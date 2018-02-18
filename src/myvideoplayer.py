@@ -4,20 +4,20 @@
 # the Phonon framework is brought to you by
 # jogi19 for the changingsong project
 # http://sourceforge.net/projects/changingsong/
- 
+from __future__ import print_function 
 import sys
 import time
 
 
-from PyQt4 import QtCore, QtGui
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
+from PyQt5 import QtCore, QtGui
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
 
-from PyQt4.phonon import Phonon
+import PyQt5.QtMultimedia as Phonon
 
 
 try:
-    from PyQt4.phonon import Phonon
+    import PyQt5.QtMultimedia as Phonon
 except ImportError:
     app = QtGui.QApplication(sys.argv)
     QtGui.QMessageBox.critical(None, "Video Player",
@@ -76,14 +76,14 @@ class MyVideoWidget(Phonon.VideoWidget):
      def stateChanged(self, newState, oldState):
          if newState == Phonon.ErrorState:
             if self.mediaObject.errorType() == Phonon.FatalError:
-                print "newState == Phonon.ErrorState:"
+                print("newState == Phonon.ErrorState:")
             else:
-                print "error"
+                print("error")
  
          elif newState == Phonon.PlayingState:
-            print "newState == Phonon.PlayingState:"
-            print "has video"
-            print self.mediaobject.hasVideo()
+            print("newState == Phonon.PlayingState:")
+            print("has video")
+            print(self.mediaobject.hasVideo())
             if not self.mediaobject.hasVideo():
                 self.close()
             else:
@@ -94,15 +94,15 @@ class MyVideoWidget(Phonon.VideoWidget):
             self.isPaused = 0        
             
          elif newState == Phonon.StoppedState:
-            print "newState == Phonon.StoppedState:"
+            print("newState == Phonon.StoppedState:")
  
          elif newState == Phonon.PausedState:
-            print "newState == Phonon.PausedState:"
+            print("newState == Phonon.PausedState:")
             self.pausedTime = self.mediaobject.currentTime()
             self.isPaused = 1
             
          elif newState == Phonon.LoadingState:
-            print "newState == Phonon.LoadingState"
+            print("newState == Phonon.LoadingState")
                 
      
 
