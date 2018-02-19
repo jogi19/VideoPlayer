@@ -1,26 +1,13 @@
 
 
 import sys
-import thread
 import time
-from PyQt4 import QtGui ,  QtCore,  Qt
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
+from PyQt5 import QtGui ,  QtCore,  Qt
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
 from videoplayergui import Ui_Dialog as Dlg
-from PyQt4.phonon import Phonon
 from myvideoplayer import MyVideoWidget
 
-try:
-    from PyQt4.phonon import Phonon
-
-
-except ImportError:
-    app = QtGui.QApplication(sys.argv)
-    QtGui.QMessageBox.critical(None, "Video Player",
-            "Your Qt installation does not have Phonon support.",
-            QtGui.QMessageBox.Ok | QtGui.QMessageBox.Default,
-            QtGui.QMessageBox.NoButton)
-    sys.exit(1)
 
 class MyDialog(QtGui.QDialog, Dlg, ): 
     def __init__(self): 
@@ -74,7 +61,7 @@ class MyDialog(QtGui.QDialog, Dlg, ):
         
     # play or resume selected track
     def onPushButtonPlay(self):
-        print"onPushButtonPlay"
+        print("onPushButtonPlay")
         self.startVideoplayer()
      
     # pause running track   
@@ -133,10 +120,10 @@ class MyDialog(QtGui.QDialog, Dlg, ):
        #self.connect(window.mediaobject, QtCore.SIGNAL("finished()"),self.onPrefinishMarkReached)
        self.labelNowPlaying.setText(self.m_myfileName)
        if self.checkBoxLockVideoSize.isChecked():
-            print "checkBoxLockVideoSize.isChecked()"
+            print("checkBoxLockVideoSize.isChecked()")
             self.onHorizontalSliderVideoSizeReleased()
        else: 
-            print "checkBoxLockVideoSize.isChecked() NO"  
+            print("checkBoxLockVideoSize.isChecked() NO")  
             window.setGeometry(geometry)
             self.labelVideoSize_width.setText(QString.number(self.width))
             self.horizontalSliderTrackPos.setValue(self.width)
@@ -187,7 +174,7 @@ class MyDialog(QtGui.QDialog, Dlg, ):
      
     def onHorizontalSliderVideoSize(self):
        va = self.horizontalSliderVideoSize.value()
-       print va
+       print(va)
        self.labelVideoSize_width.setText(QString.number(va))
        
     def onHorizontalSliderVideoSizeReleased(self):   
@@ -195,8 +182,8 @@ class MyDialog(QtGui.QDialog, Dlg, ):
        newHeight = newWidth/4*3
        newLeft = self.windowLeft+((self.width-newWidth)/2)
        newTop = self.windowTop+((self.height-newHeight)/2)
-       print "newWidth"
-       print newWidth
+       print("newWidth")
+       print(newWidth)
        window.setGeometry(newLeft, newTop, newWidth, newHeight)
        
        
@@ -216,9 +203,9 @@ class MyDialog(QtGui.QDialog, Dlg, ):
           
     def onSliderMoved(self):
         self.isSliderMoving = 1
-        print "onSliderMoved(self)"
+        print("onSliderMoved(self)")
         self.sliderPos = self.horizontalSliderTrackPos.sliderPosition()
-        print self.sliderPos
+        print(self.sliderPos)
         sliderTime = displayTime = QtCore.QTime(0, (self.sliderPos / 60000) % 60, (self.sliderPos / 1000) % 60)
         self.lcdNumberTrackTime.display(sliderTime.toString('mm:ss'))
         sliderTimeRemain = self.horizontalSliderTrackPos.maximum()-self.sliderPos
@@ -230,7 +217,7 @@ class MyDialog(QtGui.QDialog, Dlg, ):
         self.isSliderMoving = 0
         
     def onPrefinishMarkReached(self):
-        print "onPrefinishMarkReached"
+        print("onPrefinishMarkReached")
         if self.checkBoxPlaySingleTrack.isChecked():
             self.labelNowPlaying.setText("no track playing")
             return
