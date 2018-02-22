@@ -76,14 +76,14 @@ class MyVideoWidget(Phonon.VideoWidget):
      def stateChanged(self, newState, oldState):
          if newState == Phonon.ErrorState:
             if self.mediaObject.errorType() == Phonon.FatalError:
-                print "newState == Phonon.ErrorState:"
+                print("newState == Phonon.ErrorState:")
             else:
-                print "error"
+                print("error")
  
          elif newState == Phonon.PlayingState:
-            print "newState == Phonon.PlayingState:"
-            print "has video"
-            print self.mediaobject.hasVideo()
+            print("newState == Phonon.PlayingState:")
+            print("has video")
+            print(self.mediaobject.hasVideo())
             if not self.mediaobject.hasVideo():
                 self.close()
             else:
@@ -94,15 +94,15 @@ class MyVideoWidget(Phonon.VideoWidget):
             self.isPaused = 0        
             
          elif newState == Phonon.StoppedState:
-            print "newState == Phonon.StoppedState:"
+            print("newState == Phonon.StoppedState:")
  
          elif newState == Phonon.PausedState:
-            print "newState == Phonon.PausedState:"
+            print("newState == Phonon.PausedState:")
             self.pausedTime = self.mediaobject.currentTime()
             self.isPaused = 1
             
          elif newState == Phonon.LoadingState:
-            print "newState == Phonon.LoadingState"
+            print("newState == Phonon.LoadingState")
                 
      
 
