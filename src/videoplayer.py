@@ -2,24 +2,26 @@
 
 import sys
 import time
-from PyQt5 import QtGui ,  QtCore,  Qt
+from PyQt5 import QtGui ,  QtCore,  Qt, QtWidgets
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
+from PyQt5.QtCore import QObject
+from PyQt5.QtMultimediaWidgets import *
 from videoplayergui import Ui_Dialog as Dlg
 from myvideoplayer import MyVideoWidget
 
 
-class MyDialog(QtGui.QDialog, Dlg, ): 
+class MyDialog(QObject, Dlg): 
     def __init__(self): 
-        QtGui.QDialog.__init__(self) 
+        QtWidgets.QDialog.__init__(self) 
         self.setupUi(self)
         self.verticalSliderVolume.setValue(30)
-        self.desktop_widget = QDesktopWidget()
-        self.numScreens = self.desktop_widget.numScreens();
+        self.desktop_widget = QtWidgets.QDesktopWidget()
+        # self.numScreens = self.desktop_widget.numScreens()
         self.checkBoxScreenVisible.setChecked(1)
         self.skipnext =0
-        if self.numScreens > 1:
-            self.checkBoxSecondScreen.setChecked(1)
+        # if self.numScreens > 1:
+        self.checkBoxSecondScreen.setChecked(1)
         self.lastOpenedFile = "."
         self.isSliderMoving = 0
         # add Slots
@@ -249,7 +251,7 @@ class MyDialog(QtGui.QDialog, Dlg, ):
             self.horizontalSliderTrackPos.setMaximum(totaltime)
             self.horizontalSliderTrackPos.setSliderPosition(ptime)
     
-app = QtGui.QApplication(sys.argv) 
+app = QtWidgets.QApplication(sys.argv) 
 window = MyVideoWidget()
 dialog = MyDialog() 
 dialog.show() 

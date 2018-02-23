@@ -9,27 +9,26 @@ import sys
 import time
 
 
-from PyQt5 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
-
-import PyQt5.QtMultimedia as Phonon
-
+from PyQt5.QtMultimediaWidgets import *
 
 try:
-    import PyQt5.QtMultimedia as Phonon
+    import PyQt5.QtMultimedia as MM
+    
 except ImportError:
-    app = QtGui.QApplication(sys.argv)
-    QtGui.QMessageBox.critical(None, "Video Player",
+    app = QtWidgets.QApplication(sys.argv)
+    QtWidgets.QMessageBox.critical(None, "Video Player",
             "Your Qt installation does not have Phonon support.",
-            QtGui.QMessageBox.Ok | QtGui.QMessageBox.Default,
-            QtGui.QMessageBox.NoButton)
+            QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Default,
+            QtWidgets.QMessageBox.NoButton)
     sys.exit(1)
  
-class MyVideoWidget(Phonon.VideoWidget):
+class MyVideoWidget(QVideoWidget):
 
      def __init__(self):
-        QtGui.QMainWindow.__init__(self) 
+        QtWidgets.QMainWindow.__init__(self) 
         
         self.setStyleSheet("background-color: rgb(0, 0, 0);")
         self.volume = 0.3 #default value
@@ -42,15 +41,15 @@ class MyVideoWidget(Phonon.VideoWidget):
          
      #play selected file or resume after pause    
      def playIt(self, playfile):
-        self.audioOutput = Phonon.AudioOutput(Phonon.VideoCategory, self)
+        self.audioOutput = MM.AudioOutput(MM.VideoCategory, self)
         self.currentFile= playfile
-        self.mediasource = Phonon.MediaSource(self.currentFile)
-        self.mediaobject = Phonon.MediaObject()
+        self.mediasource = MM.MediaSource(self.currentFile)
+        self.mediaobject = MM.MediaObject()
         self.mediaobject.setCurrentSource(self.mediasource)
-        Phonon.createPath(self.mediaobject, self)# test
-        self.connect(self.mediaobject,QtCore.SIGNAL('stateChanged(Phonon::State, Phonon::State)'),
+        MM.createPath(self.mediaobject, self)# test
+        self.connect(self.mediaobject,QtCore.SIGNAL('stateChanged(MM::State, MM::State)'),
                 self.stateChanged)
-        Phonon.createPath(self.mediaobject, self.audioOutput) 
+        MM.createPath(self.mediaobject, self.audioOutput) 
         self.audioOutput.setVolume(self.volume)   
         self.mediaobject.pause() #check if this prevents hang on next track
         self.mediaobject.play()
@@ -74,14 +73,14 @@ class MyVideoWidget(Phonon.VideoWidget):
         self.audioOutput.setVolume(self.volume)
         
      def stateChanged(self, newState, oldState):
-         if newState == Phonon.ErrorState:
-            if self.mediaObject.errorType() == Phonon.FatalError:
-                print("newState == Phonon.ErrorState:")
+         if newState == MM.ErrorState:
+            if self.mediaObject.errorType() == MM.FatalError:
+                print("newState == MM.ErrorState:")
             else:
                 print("error")
  
-         elif newState == Phonon.PlayingState:
-            print("newState == Phonon.PlayingState:")
+         elif newState == MM.PlayingState:
+            print("newState == MM.PlayingState:")
             print("has video")
             print(self.mediaobject.hasVideo())
             if not self.mediaobject.hasVideo():
@@ -93,16 +92,16 @@ class MyVideoWidget(Phonon.VideoWidget):
             self.pausedTime = 0         
             self.isPaused = 0        
             
-         elif newState == Phonon.StoppedState:
-            print("newState == Phonon.StoppedState:")
+         elif newState == MM.StoppedState:
+            print("newState == MM.StoppedState:")
  
-         elif newState == Phonon.PausedState:
-            print("newState == Phonon.PausedState:")
+         elif newState == MM.PausedState:
+            print("newState == MM.PausedState:")
             self.pausedTime = self.mediaobject.currentTime()
             self.isPaused = 1
             
-         elif newState == Phonon.LoadingState:
-            print("newState == Phonon.LoadingState")
+         elif newState == MM.LoadingState:
+            print("newState == MM.LoadingState")
                 
      
 
