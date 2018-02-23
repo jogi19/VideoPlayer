@@ -11,7 +11,7 @@ from videoplayergui import Ui_Dialog as Dlg
 from myvideoplayer import MyVideoWidget
 
 
-class MyDialog(QObject, Dlg): 
+class MyDialog(QtWidgets.QDialog, Dlg): 
     def __init__(self): 
         QtWidgets.QDialog.__init__(self) 
         self.setupUi(self)
@@ -25,6 +25,7 @@ class MyDialog(QObject, Dlg):
         self.lastOpenedFile = "."
         self.isSliderMoving = 0
         # add Slots
+        # TODO switch to new style signal/slot http://pyqt.sourceforge.net/Docs/PyQt4/new_style_signals_slots.html
         self.connect(self.pushButtonPrevTrack,  QtCore.SIGNAL("clicked()"), self.onPushButtonPrevTrack)
         self.connect(self.pushButtonSeekPrev,  QtCore.SIGNAL("clicked()"), self.onPushButtonSeekPrev)
         self.connect(self.pushButtonPlay,  QtCore.SIGNAL("clicked()"), self.onPushButtonPlay)
