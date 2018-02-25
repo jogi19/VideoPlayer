@@ -23,28 +23,27 @@ class MyDialog(QtWidgets.QDialog, Dlg):
         self.isSliderMoving = 0
         # add Slots
         # TODO switch to new style signal/slot http://pyqt.sourceforge.net/Docs/PyQt4/new_style_signals_slots.html
-        '''
-        self.connect(self.pushButtonPrevTrack,  QtCore.SIGNAL("clicked()"), self.onPushButtonPrevTrack)
-        self.connect(self.pushButtonSeekPrev,  QtCore.SIGNAL("clicked()"), self.onPushButtonSeekPrev)
-        self.connect(self.pushButtonPlay,  QtCore.SIGNAL("clicked()"), self.onPushButtonPlay)
-        self.connect(self.pushButtonPause,  QtCore.SIGNAL("clicked()"), self.onPushButtonPause)
-        self.connect(self.pushButtonStop,  QtCore.SIGNAL("clicked()"), self.onPushButtonStop)
-        self.connect(self.pushButtonSeekNext,  QtCore.SIGNAL("clicked()"), self.onPushButtonSeekNext)
-        self.connect(self.pushButtonNextTrack,  QtCore.SIGNAL("clicked()"), self.onPushButtonNextTrack)
-        self.connect(self.verticalSliderVolume,QtCore.SIGNAL("sliderMoved(int)"), self.onSlider)
-        self.connect(self.pushButtonAddFile,  QtCore.SIGNAL("clicked()"), self.onPushButtonAddFile)
-        self.connect(self.pushButtonRemoveFile,  QtCore.SIGNAL("clicked()"), self.onPushButtonRemoveFile)
-        self.connect(self.pushButtonMoveUp,  QtCore.SIGNAL("clicked()"), self.onPushButtonMoveUp)
-        self.connect(self.pushButtonMoveDown,  QtCore.SIGNAL("clicked()"), self.onPushButtonMoveDown)
-        self.connect(self.horizontalSliderVideoSize,QtCore.SIGNAL("sliderMoved(int)"), self.onHorizontalSliderVideoSize)
-        self.connect(self.horizontalSliderVideoSize,QtCore.SIGNAL("sliderReleased ()"), self.onHorizontalSliderVideoSizeReleased)
-        self.connect(self.checkBoxScreenVisible,QtCore.SIGNAL("clicked()"), self.onCheckBoxScreenVisible)
-        self.connect(self.checkBoxPlaySingleTrack,QtCore.SIGNAL("clicked()"), self.onCheckBoxPlaySingleTrack)
+        # https://pythonspot.com/pyqt5-signals-and-slots/
+        self.pushButtonPrevTrack.clicked.connect(self.onPushButtonPrevTrack)
+        self.pushButtonSeekPrev.clicked.connect(self.onPushButtonSeekPrev)
+        self.pushButtonPlay.clicked.connect(self.onPushButtonPlay)
+        self.pushButtonPause.clicked.connect(self.onPushButtonPause)
+        self.pushButtonStop.clicked.connect(self.onPushButtonStop)
+        self.pushButtonSeekNext.clicked.connect(self.onPushButtonSeekNext)
+        self.pushButtonNextTrack.clicked.connect(self.onPushButtonNextTrack)
+        self.verticalSliderVolume.sliderMoved.connect(self.onSlider)
+        self.pushButtonAddFile.clicked.connect(self.onPushButtonAddFile)
+        self.pushButtonRemoveFile.clicked.connect(self.onPushButtonRemoveFile)
+        self.pushButtonMoveUp.clicked.connect(self.onPushButtonMoveUp)
+        self.pushButtonMoveDown.clicked.connect(self.onPushButtonMoveDown)
+        self.horizontalSliderVideoSize.sliderMoved.connect(self.onHorizontalSliderVideoSize)
+        self.horizontalSliderVideoSize.sliderReleased.connect(self.onHorizontalSliderVideoSizeReleased)
+        self.checkBoxScreenVisible.clicked.connect(self.onCheckBoxScreenVisible)
+        self.checkBoxPlaySingleTrack.clicked.connect(self.onCheckBoxPlaySingleTrack)
+        self.listWidgetPlayList.itemDoubleClicked.connect(self.onPushButtonPlay)
+        self.horizontalSliderTrackPos.sliderMoved.connect(self.onSliderMoved)
+        self.horizontalSliderTrackPos.sliderReleased.connect(self.onSiderReleased)
 
-        self.connect(self.listWidgetPlayList, QtCore.SIGNAL("itemDoubleClicked(QListWidgetItem *)"),self.onPushButtonPlay) 
-        self.connect(self.horizontalSliderTrackPos, QtCore.SIGNAL("sliderMoved (int)"),self.onSliderMoved)
-        self.connect(self.horizontalSliderTrackPos, QtCore.SIGNAL("sliderReleased ()"),self.onSiderReleased)
-        '''
         self.windowRight = 0
         self.windowLeft = 0
         self.windowBottom = 0
@@ -116,7 +115,7 @@ class MyDialog(QtWidgets.QDialog, Dlg):
        WINDOW.playIt(playfile)
 
        WINDOW.setWindowFlags(Qt.SplashScreen)
-       self.connect(window.mediaobject, QtCore.SIGNAL('tick(qint64)'),self.tick)
+       self.connect(WINDOW.mediaobject, QtCore.SIGNAL('tick(qint64)'),self.tick)
        WINDOW.mediaobject.setTickInterval(1000)
       
        self.connect(WINDOW.mediaobject, QtCore.SIGNAL("prefinishMarkReached (qint32)"),self.onPrefinishMarkReached)
@@ -157,7 +156,7 @@ class MyDialog(QtWidgets.QDialog, Dlg):
     def onPushButtonRemoveFile(self):
         ci = self.listWidgetPlayList.currentRow()
         self.listWidgetPlayList.takeItem(ci)
-
+    
     # move item up in playlist   
     def onPushButtonMoveUp(self):
         ci = self.listWidgetPlayList.currentRow()
