@@ -24,7 +24,6 @@ class MyDialog(QtWidgets.QDialog, Dlg):
         # add Slots
         # TODO switch to new style signal/slot http://pyqt.sourceforge.net/Docs/PyQt4/new_style_signals_slots.html
         # https://pythonspot.com/pyqt5-signals-and-slots/
-        # https://wiki.qt.io/Transition_from_Qt_4.x_to_Qt5
         self.pushButtonPrevTrack.clicked.connect(self.onPushButtonPrevTrack)
         self.pushButtonSeekPrev.clicked.connect(self.onPushButtonSeekPrev)
         self.pushButtonPlay.clicked.connect(self.onPushButtonPlay)
@@ -116,10 +115,12 @@ class MyDialog(QtWidgets.QDialog, Dlg):
        WINDOW.playIt(playfile)
 
        WINDOW.setWindowFlags(Qt.SplashScreen)
-       self.connect(WINDOW.mediaobject, QtCore.SIGNAL('tick(qint64)'),self.tick)
+       #self.connect(WINDOW.mediaobject, QtCore.SIGNAL('tick(qint64)'),self.tick)
+       WINDOW.mediaobject.tick.connect(self.tick)
        WINDOW.mediaobject.setTickInterval(1000)
       
-       self.connect(WINDOW.mediaobject, QtCore.SIGNAL("prefinishMarkReached (qint32)"),self.onPrefinishMarkReached)
+       #self.connect(WINDOW.mediaobject, QtCore.SIGNAL("prefinishMarkReached (qint32)"),self.onPrefinishMarkReached)
+       WINDOW.mediaobject.finished.connect(self.onPrefinishMarkReached)
        WINDOW.mediaobject.setPrefinishMark(1000)
        #self.connect(WINDOW.mediaobject, QtCore.SIGNAL("finished()"),self.onPrefinishMarkReached)
        self.labelNowPlaying.setText(self.m_myfileName)
@@ -129,7 +130,7 @@ class MyDialog(QtWidgets.QDialog, Dlg):
        else: 
             print("checkBoxLockVideoSize.isChecked() NO")  
             WINDOW.setGeometry(geometry)
-            self.labelVideoSize_width.setText(QString.number(self.width))
+            self.labelVideoSize_width.setText(str(self.width))
             self.horizontalSliderTrackPos.setValue(self.width)
 
     # set volume
@@ -139,16 +140,17 @@ class MyDialog(QtWidgets.QDialog, Dlg):
 
     # add file to playlist
     def onPushButtonAddFile(self):
-        self.filename = QtGui.QFileDialog.getOpenFileNames(self, "Load Video or Audio File",self.lastOpenedFile ,"*.avi;*.mp3;*.ogg" )
- 
-        if self.filename.isEmpty():
+        self.filename = QtWidgets.QFileDialog.getOpenFileNames(self, "Load Video or Audio File",self.lastOpenedFile ,"*.*" )
+        print("self.filename: "+str(self.filename))
+        if len(self.filename) <= 0:
             return
         activateFirstEntry = 0
         if self.listWidgetPlayList.count() <=1:
              activateFirstEntry = 1
 
         self.lastOpenedFile = self.filename[0] 
-        self.listWidgetPlayList.addItems(self.filename)
+        # self.listWidgetPlayList.addItems(self.filename)
+        self.listWidgetPlayList.addItem(str(self.filename[0])) # only one file can be added TODO Fix it
         # make shure, that one item is selected
         if activateFirstEntry==1:
             self.listWidgetPlayList.setCurrentRow(0) 
@@ -179,7 +181,7 @@ class MyDialog(QtWidgets.QDialog, Dlg):
     def onHorizontalSliderVideoSize(self):
         va = self.horizontalSliderVideoSize.value()
         print(va)
-        self.labelVideoSize_width.setText(QString.number(va))
+        self.labelVideoSize_width.setText(str(va))
 
     def onHorizontalSliderVideoSizeReleased(self):   
         newWidth = self.horizontalSliderVideoSize.value()
@@ -233,9 +235,9 @@ class MyDialog(QtWidgets.QDialog, Dlg):
 
 
     def getFileName(self, pathname):
-        p_pathname = QString(pathname)
+        p_pathname = str(pathname)
         posSlash= p_pathname.lastIndexOf("/", -1)
-        fn = p_pathname.remove (0, posSlash+1)
+        fn = p_pathname.remove(0, posSlash+1)
         return fn
 
     def tick(self, ptime):

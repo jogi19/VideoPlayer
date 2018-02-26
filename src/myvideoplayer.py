@@ -102,6 +102,4 @@ class MyVideoWidget(QVideoWidget):
             
          elif newState == MM.LoadingState:
             print("newState == MM.LoadingState")
-                
-     
 
