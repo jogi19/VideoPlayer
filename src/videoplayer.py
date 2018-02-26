@@ -24,6 +24,7 @@ class MyDialog(QtWidgets.QDialog, Dlg):
         # add Slots
         # TODO switch to new style signal/slot http://pyqt.sourceforge.net/Docs/PyQt4/new_style_signals_slots.html
         # https://pythonspot.com/pyqt5-signals-and-slots/
+        # https://wiki.qt.io/Transition_from_Qt_4.x_to_Qt5
         self.pushButtonPrevTrack.clicked.connect(self.onPushButtonPrevTrack)
         self.pushButtonSeekPrev.clicked.connect(self.onPushButtonSeekPrev)
         self.pushButtonPlay.clicked.connect(self.onPushButtonPlay)
