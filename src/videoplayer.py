@@ -14,13 +14,19 @@ class MyDialog(QtWidgets.QDialog, Dlg):
         self.setupUi(self)
         self.verticalSliderVolume.setValue(30)
         self.desktop_widget = QtWidgets.QDesktopWidget()
-        #self.numScreens = self.desktop_widget.numScreens() TODO needs to figure out, why this is not working
+        app = QtGui.QGuiApplication
+        #QtWidgets.QtGui
+        all_screens = app.screens()
+        #self.numScreens = self.desktop_widget.numScreens() #TODO needs to figure out, why this is not working
+        self.numScreens = len(all_screens)
+        print(self.numScreens)
         self.checkBoxScreenVisible.setChecked(1)
         self.skipnext = 0
-        #if self.numScreens > 1:
-        self.checkBoxSecondScreen.setChecked(1)
+        if self.numScreens > 1:
+            self.checkBoxSecondScreen.setChecked(1)
         self.lastOpenedFile = "."
         self.isSliderMoving = 0
+        print('### 1 ###')
         # add Slots
         # TODO switch to new style signal/slot http://pyqt.sourceforge.net/Docs/PyQt4/new_style_signals_slots.html
         # https://pythonspot.com/pyqt5-signals-and-slots/
@@ -50,6 +56,7 @@ class MyDialog(QtWidgets.QDialog, Dlg):
         self.windowTop = 0
         self.height = 0
         self.width = 0
+        print('### 2 ###')
     #play previous track in play list
     def onPushButtonPrevTrack(self):
         ci = self.listWidgetPlayList.currentRow()
@@ -140,6 +147,7 @@ class MyDialog(QtWidgets.QDialog, Dlg):
 
     # add file to playlist
     def onPushButtonAddFile(self):
+        print('self.lastOpendFile1: '+str(self.lastOpenedFile))
         self.filename = QtWidgets.QFileDialog.getOpenFileNames(self, "Load Video or Audio File",self.lastOpenedFile ,"*.*" )
         print("self.filename: "+str(self.filename))
         if len(self.filename) <= 0:
@@ -148,9 +156,9 @@ class MyDialog(QtWidgets.QDialog, Dlg):
         if self.listWidgetPlayList.count() <=1:
              activateFirstEntry = 1
 
-        self.lastOpenedFile = self.filename[0] 
-        # self.listWidgetPlayList.addItems(self.filename)
-        self.listWidgetPlayList.addItem(str(self.filename[0])) # only one file can be added TODO Fix it
+        self.lastOpenedFile = str(self.filename[0])
+        print('self.lastOpendFile2: '+self.lastOpenedFile)
+        self.listWidgetPlayList.addItems(self.filename[0])
         # make shure, that one item is selected
         if activateFirstEntry==1:
             self.listWidgetPlayList.setCurrentRow(0) 
@@ -236,8 +244,12 @@ class MyDialog(QtWidgets.QDialog, Dlg):
 
     def getFileName(self, pathname):
         p_pathname = str(pathname)
-        posSlash= p_pathname.lastIndexOf("/", -1)
-        fn = p_pathname.remove(0, posSlash+1)
+        print('p_pathname: '+p_pathname)
+        #posSlash= p_pathname.rindex("/", -1)
+        posSlash= p_pathname.rindex("/")
+        #fn = p_pathname.remove(0, posSlash+1)
+        fn = p_pathname[posSlash+1:]
+        print('fn: '+fn)
         return fn
 
     def tick(self, ptime):

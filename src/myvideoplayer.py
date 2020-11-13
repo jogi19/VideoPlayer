@@ -41,7 +41,7 @@ class MyVideoWidget(QVideoWidget):
          
      #play selected file or resume after pause    
      def playIt(self, playfile):
-        self.audioOutput = MM.AudioOutput(MM.VideoCategory, self)
+        self.audioOutput = MM.QAudioOutput(MM.QAudioEncoderSettings, self)
         self.currentFile= playfile
         self.mediasource = MM.MediaSource(self.currentFile)
         self.mediaobject = MM.MediaObject()
@@ -102,4 +102,3 @@ class MyVideoWidget(QVideoWidget):
             
          elif newState == MM.LoadingState:
             print("newState == MM.LoadingState")
-
