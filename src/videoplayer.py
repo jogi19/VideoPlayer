@@ -123,12 +123,12 @@ class MyDialog(QtWidgets.QDialog, Dlg):
 
        WINDOW.setWindowFlags(Qt.SplashScreen)
        #self.connect(WINDOW.mediaobject, QtCore.SIGNAL('tick(qint64)'),self.tick)
-       WINDOW.mediaobject.tick.connect(self.tick)
-       WINDOW.mediaobject.setTickInterval(1000)
-      
+       #WINDOW.mediaobject.tick.connect(self.tick) # TODO figure out how tp get the ticks
+       #WINDOW.mediaobject.setTickInterval(1000)
+       
        #self.connect(WINDOW.mediaobject, QtCore.SIGNAL("prefinishMarkReached (qint32)"),self.onPrefinishMarkReached)
-       WINDOW.mediaobject.finished.connect(self.onPrefinishMarkReached)
-       WINDOW.mediaobject.setPrefinishMark(1000)
+       #WINDOW.mediaobject.finished.connect(self.onPrefinishMarkReached)
+       #WINDOW.mediaobject.setPrefinishMark(1000)
        #self.connect(WINDOW.mediaobject, QtCore.SIGNAL("finished()"),self.onPrefinishMarkReached)
        self.labelNowPlaying.setText(self.m_myfileName)
        if self.checkBoxLockVideoSize.isChecked():

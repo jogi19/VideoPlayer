@@ -6,11 +6,11 @@ import sys
 
 app = QApplication(sys.argv)
 w = QVideoWidget()
-w.resize(960, 540)
+#w.resize(960, 540)
 w.move(0, 0)
 w.show()
 player = QMediaPlayer()
-player.setMedia(QMediaContent(QUrl.fromLocalFile("/home/jogi/Videos/local.mkv")))
+player.setMedia(QMediaContent(QUrl.fromLocalFile("/home/jogi/Videos/maximilian_weiss.mkv")))
 player.setVideoOutput(w)
 player.play()
 sys.exit(app.exec_())

@@ -12,6 +12,7 @@ import time
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
+from PyQt5.QtMultimedia import QMediaContent
 from PyQt5.QtMultimediaWidgets import *
 
 try:
@@ -34,30 +35,29 @@ class MyVideoWidget(QVideoWidget):
         self.volume = 0.3 #default value
         self.isPaused = 0
         self.pausedTime = 0
+        self.format = MM.QAudioFormat()
+        self.player = MM.QMediaPlayer()
+
         
      #stop currend file
      def stopIt(self):
-         self.mediaobject.stop()
+         self.player.stop()
+         
          
      #play selected file or resume after pause    
      def playIt(self, playfile):
-        self.audioOutput = MM.QAudioOutput(MM.QAudioEncoderSettings, self)
-        self.currentFile= playfile
-        self.mediasource = MM.MediaSource(self.currentFile)
-        self.mediaobject = MM.MediaObject()
-        self.mediaobject.setCurrentSource(self.mediasource)
-        MM.createPath(self.mediaobject, self)# test
-        self.connect(self.mediaobject,QtCore.SIGNAL('stateChanged(MM::State, MM::State)'),
-                self.stateChanged)
-        MM.createPath(self.mediaobject, self.audioOutput) 
-        self.audioOutput.setVolume(self.volume)   
-        self.mediaobject.pause() #check if this prevents hang on next track
-        self.mediaobject.play()
-        
+         
+      # Set up the format, eg.
+      # OLD
+        w = QVideoWidget()
+        w.show()
+        self.player.setMedia(QMediaContent(QUrl.fromLocalFile(playfile)))
+        self.player.setVideoOutput(w)
+        self.player.play()
        
      # pause current running file   
      def pauseIt(self):
-        self.mediaobject.pause()
+        self.player.pause()
      
      # seek in current file. 
      def seekIt(self, milisec):
@@ -69,8 +69,8 @@ class MyVideoWidget(QVideoWidget):
      # set valume in percent in a range of 0% -100% 
      def setVideoVolume(self, volumePercent):
         volumeValue = volumePercent/100.0
-        self.volume = volumeValue 
-        self.audioOutput.setVolume(self.volume)
+        self.player.setVolume(volumeValue)
+        
         
      def stateChanged(self, newState, oldState):
          if newState == MM.ErrorState:
