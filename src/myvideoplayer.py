@@ -37,10 +37,11 @@ class MyVideoWidget(QVideoWidget):
         self.pausedTime = 0
         self.format = MM.QAudioFormat()
         self.player = MM.QMediaPlayer()
-
+        self.isStopped = False;  
         
      #stop currend file
      def stopIt(self):
+         self.isStopped = True
          self.player.stop()
          
          
@@ -49,11 +50,14 @@ class MyVideoWidget(QVideoWidget):
          
       # Set up the format, eg.
       # OLD
+        self.isStopped = True
         w = QVideoWidget()
         w.show()
+        print("playfile: "+playfile)
         self.player.setMedia(QMediaContent(QUrl.fromLocalFile(playfile)))
         self.player.setVideoOutput(w)
         self.player.play()
+        sys.exit(app.exec_())
        
      # pause current running file   
      def pauseIt(self):
