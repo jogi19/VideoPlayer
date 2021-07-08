@@ -8,7 +8,7 @@ from PyQt5.QtMultimediaWidgets import *
 from videoplayergui import Ui_Dialog as Dlg
 from myvideoplayer import MyVideoWidget
 
-class MyDialog(QtWidgets.QDialog, Dlg):
+class MyDialog(QtWidgets.QDialog,Dlg):
     def __init__(self):
         QtWidgets.QDialog.__init__(self)
         self.setupUi(self)
@@ -19,7 +19,7 @@ class MyDialog(QtWidgets.QDialog, Dlg):
         all_screens = app.screens()
         #self.numScreens = self.desktop_widget.numScreens() #TODO needs to figure out, why this is not working
         self.numScreens = len(all_screens)
-        print(self.numScreens)
+        print("self.numScreens: "+str(self.numScreens))
         self.checkBoxScreenVisible.setChecked(1)
         self.skipnext = 0
         if self.numScreens > 1:
@@ -56,7 +56,7 @@ class MyDialog(QtWidgets.QDialog, Dlg):
         self.windowTop = 0
         self.height = 0
         self.width = 0
-        print('### 2 ###')
+        
     #play previous track in play list
     def onPushButtonPrevTrack(self):
         ci = self.listWidgetPlayList.currentRow()
@@ -114,7 +114,7 @@ class MyDialog(QtWidgets.QDialog, Dlg):
        self.windowTop = geometry.top()
        self.height = self.windowBottom - self.windowTop+1
        self.width = self.windowRight - self.windowLeft+1
-
+        
        if self.listWidgetPlayList.count() <= 0:
             return
        playfile = self.listWidgetPlayList.currentItem().text()
