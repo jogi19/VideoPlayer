@@ -72,8 +72,7 @@ class MyVideoWidget(QVideoWidget):
         
      # set valume in percent in a range of 0% -100% 
      def setVideoVolume(self, volumePercent):
-        volumeValue = volumePercent/100.0
-        self.player.setVolume(volumeValue)
+        self.player.setVolume(volumePercent)
         
         
      def stateChanged(self, newState, oldState):
